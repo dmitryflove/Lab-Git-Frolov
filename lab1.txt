@@ -1,0 +1,109 @@
+// Hub таблицы
+
+Table HubTraveler {
+  TravelerID integer [primary key]
+  BusinessKey varchar [note: 'Unique traveler identifier']
+  LoadDate timestamp
+  RecordSource varchar
+}
+
+Table HubFlight {
+  FlightID integer [primary key]
+  BusinessKey varchar [note: 'Unique flight identifier']
+  LoadDate timestamp
+  RecordSource varchar
+}
+
+Table HubHotel {
+  HotelID integer [primary key]
+  BusinessKey varchar [note: 'Unique hotel identifier']
+  LoadDate timestamp
+  RecordSource varchar
+}
+
+Table HubBooking {
+  BookingID integer [primary key]
+  BusinessKey varchar [note: 'Unique booking identifier']
+  LoadDate timestamp
+  RecordSource varchar
+}
+
+// Link таблицы
+
+Table LinkTravelerBooking {
+  LinkID integer [primary key]
+  TravelerID integer
+  BookingID integer
+  LoadDate timestamp
+  RecordSource varchar
+}
+
+Table LinkBookingFlight {
+  LinkID integer [primary key]
+  BookingID integer
+  FlightID integer
+  LoadDate timestamp
+  RecordSource varchar
+}
+
+Table LinkBookingHotel {
+  LinkID integer [primary key]
+  BookingID integer
+  HotelID integer
+  LoadDate timestamp
+  RecordSource varchar
+}
+
+// Satellite таблицы
+
+Table SatTravelerDetails {
+  TravelerID integer
+  FullName varchar
+  Email varchar
+  PassportNumber varchar
+  LoadDate timestamp
+  RecordSource varchar
+}
+
+Table SatFlightDetails {
+  FlightID integer
+  FlightNumber varchar
+  DepartureDate timestamp
+  ArrivalDate timestamp
+  Airline varchar
+  LoadDate timestamp
+  RecordSource varchar
+}
+
+Table SatHotelDetails {
+  HotelID integer
+  HotelName varchar
+  Location varchar
+  StarRating integer
+  LoadDate timestamp
+  RecordSource varchar
+}
+
+Table SatBookingDetails {
+  BookingID integer
+  BookingDate timestamp
+  TotalPrice decimal
+  LoadDate timestamp
+  RecordSource varchar
+}
+
+// Определение связей между таблицами
+
+Ref: LinkTravelerBooking.TravelerID > HubTraveler.TravelerID // many-to-one
+Ref: LinkTravelerBooking.BookingID > HubBooking.BookingID // many-to-one
+
+Ref: LinkBookingFlight.BookingID > HubBooking.BookingID // many-to-one
+Ref: LinkBookingFlight.FlightID > HubFlight.FlightID // many-to-one
+
+Ref: LinkBookingHotel.BookingID > HubBooking.BookingID // many-to-one
+Ref: LinkBookingHotel.HotelID > HubHotel.HotelID // many-to-one
+
+Ref: SatTravelerDetails.TravelerID > HubTraveler.TravelerID // many-to-one
+Ref: SatFlightDetails.FlightID > HubFlight.FlightID // many-to-one
+Ref: SatHotelDetails.HotelID > HubHotel.HotelID // many-to-one
+Ref: SatBookingDetails.BookingID > HubBooking.BookingID // many-to-one
